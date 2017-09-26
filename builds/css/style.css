@@ -109,6 +109,10 @@ svg {
     stroke-width: 3px;
 }
 
+.focus.tips {
+    opacity: 0.77;
+    fill: #5e6670
+}
 .focus-bar {
     fill: #fff;
     filter: url(#drop-shadow)

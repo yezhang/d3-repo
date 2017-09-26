@@ -345,12 +345,24 @@ var focus = svg
     .style("display", "none")
     .on('mouseover', function () {
         focus.style("display", null);
-        // focusBar.style("display", null);
     })
     .on("mouseout", function () {
         focus.style("display", "none");
-        // focusBar.style("display", "none");
     });
+
+var focusTips = focus.append('g');
+focusTips
+    .append("rect")
+    .attr('width', 100)
+    .attr('height', 50)
+    .attr('rx', 5)
+    .attr('class', 'focus tips');
+
+focusTips
+    .append("text")
+    .attr('fill', '#fff')
+    .attr("x", 5)
+    .attr("dy", "1em");
 
 var focusBar = focus.append('g');
 
@@ -364,11 +376,6 @@ focusCircle
     .classed('dot', true)
     .classed('red', true)
     .attr("r", 5);
-
-focusCircle
-    .append("text")
-    .attr("x", 16)
-    .attr("dy", ".35em");
 
 var focusBarWidth = 34;
 focusBar
@@ -486,6 +493,9 @@ function mousemove() {
     //处理鼠标从右侧划入图形时的问题
     if (d) {
         focusCircle.attr("transform", "translate(" + xScale(selection) + "," + yScale(d) + ")");
+        var tipsX = (xScale(selection) + focusBarWidth / 2 + 10);
+        var tipsY = yScale(d) - 20;
+        focusTips.attr("transform", "translate(" + tipsX + "," + tipsY + ")");
     }
 
     focusBar.attr("transform", "translate(" + (xScale(selection) - focusBarWidth / 2) + "," + 0 + ")");
@@ -494,13 +504,14 @@ function mousemove() {
         .attr('opacity', 0)
         .transition()
         .ease(d3.easeCubic)
-        // .delay(500)
         .duration(200)
         .attr('opacity', 1);
 
-    focusCircle
+    //动态调整高亮时的提示文本
+    focusTips
         .select("text")
         .text(d);
+
     focusBar
         .select('text')
         .text((selection) + '月')

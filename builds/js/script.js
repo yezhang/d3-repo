@@ -4,7 +4,7 @@ var sumOfMonth = [
     198,
     389,
     170,
-    800,
+    100,
     300,
     312,
     155,
@@ -47,12 +47,18 @@ var xScale = d3
     ]) //控制 x 轴的左右缩进
     .range([0, width]);
 
-var yScale = d3
+function makeYScale(data) {
+    var yScale = d3
     .scaleLinear()
     .domain([
-        0, 1.25 * d3.max(sumOfMonth)
+        0, 1.25 * d3.max(data)
     ])
     .range([height, 10]);
+
+    return yScale;
+}
+var yScalePrimary = makeYScale(redSumOfMonth);
+var yScaleSecond  = makeYScale(sumOfMonth);
 
 var xAxisTicks = d3
     .axisBottom(xScale)
@@ -63,14 +69,14 @@ var xAxisTicks = d3
     .ticks(12);
 
 var yAxisTicks = d3
-    .axisRight(yScale)
+    .axisRight(yScalePrimary)
     .tickSize(width)
     .ticks(5)
     .tickFormat(function (d) {
         return d;
     });
 
-var yAxixTicksRight = d3.axisRight(yScale);
+var yAxixTicksRight = d3.axisRight(yScaleSecond).ticks(5);
 
 var svg = d3
     .select('#viz')
@@ -80,7 +86,7 @@ var svg = d3
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-function makeGraph(svg, seriesData, color, isShowingDots) {
+function makeGraph(svg, seriesData, yScale, color, isShowingDots) {
     var themecolor = color || "";
     var showingDots = isShowingDots || false;
 
@@ -314,10 +320,10 @@ svg
     .attr("transform", "translate(" + width + " ,0)")
     .call(customRightYAxis);
 
-makeGraph(svg, sumOfMonth, 'green');
+makeGraph(svg, sumOfMonth, yScaleSecond, 'green');
 
 
-makeGraph(svg, redSumOfMonth, 'red', true)
+makeGraph(svg, redSumOfMonth, yScalePrimary, 'red', true)
 
 //添加事件浮动
 var overlay = svg
@@ -481,9 +487,9 @@ function mousemove() {
 
     //处理鼠标从右侧划入图形时的问题
     if (d) {
-        focusCircle.attr("transform", "translate(" + xScale(selection) + "," + yScale(d) + ")");
+        focusCircle.attr("transform", "translate(" + xScale(selection) + "," + yScalePrimary(d) + ")");
         var tipsX = (xScale(selection) + focusBarWidth / 2 + 10);
-        var tipsY = yScale(d) - 20;
+        var tipsY = yScalePrimary(d) - 20;
         focusTips.attr("transform", "translate(" + tipsX + "," + tipsY + ")");
     }
 

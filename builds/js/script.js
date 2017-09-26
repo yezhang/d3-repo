@@ -13,6 +13,21 @@ var sumOfMonth = [
     190
 ];
 
+var redSumOfMonth = [
+    100,
+    520,
+    158,
+    300,
+    208,
+    500,
+    89,
+    71,
+    666,
+    100,
+    340,
+    123
+];
+
 var margin = {
     top: 30,
     right: 50,
@@ -43,9 +58,6 @@ var xAxisTicks = d3
     .axisBottom(xScale)
     .tickSizeInner(20)
     .tickFormat(function (d) {
-        if (d == 0) {
-            return null; //移除 0 坐标
-        }
         return d + '月';
     })
     .ticks(12);
@@ -242,10 +254,8 @@ function customYAxis(g) {
     g
         .select(".domain")
         .remove();
-    // g     .seslectAll(".tick:not(:first-of-type) line")     .attr("stroke",
-    // "#666")     .attr("stroke-dasharray", "2,2");
 
-    var tickLeftShift = -30;
+    var tickLeftShift = -35;
     g
         .selectAll(".tick text")
         .classed("tick-label", true)
@@ -257,7 +267,7 @@ function customYAxis(g) {
         .append("text")
         .attr('class', 'tick y unit')
         .attr("text-anchor", "left") // this makes it easy to centre the text as the transform is applied to the anchor
-        .attr("transform", "translate(" + tickLeftShift + "," + -10 + ")") // text is drawn off the screen top left, move down and out and rotate
+        .attr("transform", "translate(" + tickLeftShift + "," + -15 + ")") // text is drawn off the screen top left, move down and out and rotate
         .text("张");
 }
 
@@ -266,8 +276,6 @@ function customRightYAxis(g) {
     g
         .select(".domain")
         .remove();
-    // g     .seslectAll(".tick:not(:first-of-type) line")     .attr("stroke",
-    // "#666")     .attr("stroke-dasharray", "2,2");
     g
         .selectAll('line')
         .remove();
@@ -308,20 +316,7 @@ svg
 
 makeGraph(svg, sumOfMonth, 'green');
 
-var redSumOfMonth = [
-    100,
-    520,
-    158,
-    300,
-    208,
-    500,
-    89,
-    71,
-    666,
-    100,
-    340,
-    123
-];
+
 makeGraph(svg, redSumOfMonth, 'red', true)
 
 //添加事件浮动
@@ -408,16 +403,12 @@ function setAlpha() {
     // filters go in defs element
     var defs = svg.append("defs");
 
-    // create filter with id #drop-shadow height=130% so that the shadow is not
-    // clipped
     var filter = defs
         .append("filter")
         .attr("id", "drop-shadow")
         .attr("filterUnits", "userSpaceOnUse")
         .attr("height", "130%");
 
-    // translate output of Gaussian blur to the right and downwards with 2px store
-    // result in offsetBlur
     filter
         .append("feOffset")
         .attr("in", "SourceAlpha")
@@ -437,9 +428,6 @@ function setAlpha() {
         .attr('flood-color', '#e04e48')
         .attr('flood-opacity', '0.36')
         .attr('result', 'colorOut');
-    // SourceAlpha refers to opacity of graphic that this filter will be applied to
-    // convolve that with a Gaussian with standard deviation 3 and store result in
-    // blur
 
     filter
         .append('feComposite')
@@ -456,11 +444,12 @@ function setAlpha() {
         .append("feMergeNode")
         .attr("in", "SourceGraphic");
 }
-var bisectDate = d3.bisector(function (d) {
+var bisect = d3.bisector(function (d) {
     return d;
 }).right;
 
 function mousemove() {
+    //console.log(this, d3.mouse(this));
     var monthList = [
         1,
         2,
@@ -476,7 +465,7 @@ function mousemove() {
         12
     ];
     var x0 = xScale.invert(d3.mouse(this)[0]),
-        i = bisectDate(monthList, x0),
+        i = bisect(monthList, x0),
         dLeft = redSumOfMonth[i - 1],
         dRight = redSumOfMonth[i];
     var rightIndex = i + 1;
@@ -510,7 +499,7 @@ function mousemove() {
     //动态调整高亮时的提示文本
     focusTips
         .select("text")
-        .text(d);
+        .text('开票量：' + d);
 
     focusBar
         .select('text')

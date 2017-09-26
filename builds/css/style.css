@@ -1,0 +1,115 @@
+svg {
+    /* border: 1px solid #dedede; */
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.dot {
+    fill: white;
+    stroke-width: 3px;
+}
+
+.dot.red {
+    stroke: #e14c46;
+}
+
+.dot.green {
+    stroke: #00b390;
+}
+
+.dotshadow {
+    fill: white;
+    stroke: none;
+}
+
+
+/*
+上方曲线, 2px 宽度
+*/
+
+.line {
+    fill: none;
+    stroke-width: 2px;
+}
+
+.line.red {
+    stroke: #e14c46;
+}
+
+.line.green {
+    stroke: #00b390
+}
+
+.line.green.light {
+    stroke: #00b390;
+    stroke-opacity: 0.1;
+}
+
+.area {
+    opacity: 0.5;
+}
+
+.area.red {
+    fill: url(#mainGradient-red);
+}
+
+.area.green {
+    fill: url(#mainGradient-green);
+}
+
+.stop-top {
+    stroke-opacity: 0.5;
+}
+
+.stop-top.red {
+    stop-color: #FDD0D6;
+}
+
+.stop-top.green {
+    stop-color: #32F5CE;
+}
+
+.stop-top.green.light {
+    stop-color: #BAFFF0;
+    stroke-opacity: 0.1;
+}
+
+.stop-bottom {
+    stop-color: #fff;
+    stroke-opacity: 0.5;
+}
+
+.domain.gray {
+    stroke: #eee
+}
+
+.tick-label {
+    font-size: 14px;
+    fill: #909090
+}
+
+.tick.y.unit {
+    font-size: 14px;
+    fill: #909090;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus circle {
+    fill: white;
+    stroke-width: 3px;
+}
+
+.focus-bar {
+    fill: #fff;
+    filter: url(#drop-shadow)
+}

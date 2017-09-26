@@ -1,0 +1,13 @@
+{
+  "name": "d3",
+  "version": "1.0.0",
+  "description": "D3 Graph",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^6.3.0",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-util": "^3.0.8",
+    "gulp-webserver": "^0.9.1"
+  },
+  "author": "yezhang989"
+}

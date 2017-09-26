@@ -4,7 +4,7 @@ var sumOfMonth = [
     198,
     389,
     170,
-    100,
+    800,
     300,
     312,
     155,
@@ -57,6 +57,7 @@ function makeYScale(data) {
 
     return yScale;
 }
+
 var yScalePrimary = makeYScale(redSumOfMonth);
 var yScaleSecond  = makeYScale(sumOfMonth);
 
@@ -68,7 +69,7 @@ var xAxisTicks = d3
     })
     .ticks(12);
 
-var yAxisTicks = d3
+var yAxisTicksPrimary = d3
     .axisRight(yScalePrimary)
     .tickSize(width)
     .ticks(5)
@@ -76,7 +77,7 @@ var yAxisTicks = d3
         return d;
     });
 
-var yAxixTicksRight = d3.axisRight(yScaleSecond).ticks(5);
+var yAxixTicksSecond = d3.axisRight(yScaleSecond).ticks(5);
 
 var svg = d3
     .select('#viz')
@@ -256,7 +257,7 @@ function customXAxis(g) {
 }
 
 function customYAxis(g) {
-    g.call(yAxisTicks);
+    g.call(yAxisTicksPrimary);
     g
         .select(".domain")
         .remove();
@@ -278,7 +279,7 @@ function customYAxis(g) {
 }
 
 function customRightYAxis(g) {
-    g.call(yAxixTicksRight);
+    g.call(yAxixTicksSecond);
     g
         .select(".domain")
         .remove();

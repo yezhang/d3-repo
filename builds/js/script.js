@@ -59,7 +59,7 @@ function makeYScale(data) {
 }
 
 var yScalePrimary = makeYScale(redSumOfMonth);
-var yScaleSecond  = makeYScale(sumOfMonth);
+var yScaleSecondary  = makeYScale(sumOfMonth);
 
 var xAxisTicks = d3
     .axisBottom(xScale)
@@ -77,7 +77,7 @@ var yAxisTicksPrimary = d3
         return d;
     });
 
-var yAxixTicksSecond = d3.axisRight(yScaleSecond).ticks(5);
+var yAxixTicksSecond = d3.axisRight(yScaleSecondary).ticks(5);
 
 var svg = d3
     .select('#viz')
@@ -200,6 +200,10 @@ function makeGraph(svg, seriesData, yScale, color, isShowingDots) {
     if (showingDots) {
         //添加上方圆点的白色边界
         var dotGroup = svg.append('g');
+        var dotShadowRadius = 11;
+        var dotRadius = 6;
+        // var dotStrokeWidth = 3; //set in css.
+
         dotGroup
             .append('g')
             .selectAll('circle')
@@ -213,8 +217,9 @@ function makeGraph(svg, seriesData, yScale, color, isShowingDots) {
             .attr('cy', function (d) {
                 return yScale(d);
             })
-            .attr('r', 11);
+            .attr('r', dotShadowRadius);
 
+       
         //添加上方圆点
         var dotDisplay = dotGroup
             .append('g')
@@ -229,7 +234,7 @@ function makeGraph(svg, seriesData, yScale, color, isShowingDots) {
             .attr('cy', function (d) {
                 return yScale(d);
             })
-            .attr('r', 5);
+            .attr('r', dotRadius);
 
         dotGroup
             .attr('opacity', 0)
@@ -321,7 +326,7 @@ svg
     .attr("transform", "translate(" + width + " ,0)")
     .call(customRightYAxis);
 
-makeGraph(svg, sumOfMonth, yScaleSecond, 'green');
+makeGraph(svg, sumOfMonth, yScaleSecondary, 'green');
 
 
 makeGraph(svg, redSumOfMonth, yScalePrimary, 'red', true)
